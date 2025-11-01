@@ -4,3 +4,7 @@
 */bin/Release/*
 /bin
 /obj
+/.vs
+/.vs/ScreenRuler
+/.vs/ScreenRuler/CopilotIndices
+/.vs/ScreenRuler/FileContentIndex

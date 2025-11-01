@@ -33,63 +33,114 @@ namespace ScreenRuler
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RulerForm));
-            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
-            alwaysOnTopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            CalibrationItem = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            CloseItem = new System.Windows.Forms.ToolStripMenuItem();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            saveSessionMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem2 = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            CalibrationItem = new ToolStripMenuItem();
+            alwaysOnTopMenuItem = new ToolStripMenuItem();
+            helpMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
+            CloseItem = new ToolStripMenuItem();
+            toolStripMenuItem3 = new ToolStripMenuItem();
+            saveSessionToolStripMenuItem = new ToolStripMenuItem();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { alwaysOnTopMenuItem, CalibrationItem, toolStripMenuItem1, CloseItem });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { saveSessionMenuItem, toolStripMenuItem2, toolStripSeparator1, CalibrationItem, alwaysOnTopMenuItem, helpMenuItem, toolStripMenuItem1, CloseItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(181, 98);
+            contextMenuStrip1.Size = new Size(181, 170);
+            // 
+            // saveSessionMenuItem
+            // 
+            saveSessionMenuItem.Name = "saveSessionMenuItem";
+            saveSessionMenuItem.Size = new Size(180, 22);
+            saveSessionMenuItem.Text = "Save Session...";
+            saveSessionMenuItem.Click += saveSessionMenuItem_Click;
+            // 
+            // toolStripMenuItem2
+            // 
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new Size(180, 22);
+            toolStripMenuItem2.Text = "Load Session...";
+            toolStripMenuItem2.Click += loadSessionMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(177, 6);
+            // 
+            // CalibrationItem
+            // 
+            CalibrationItem.Name = "CalibrationItem";
+            CalibrationItem.Size = new Size(180, 22);
+            CalibrationItem.Text = "Calibration...";
+            CalibrationItem.Click += Calibration_Click;
             // 
             // alwaysOnTopMenuItem
             // 
             alwaysOnTopMenuItem.CheckOnClick = true;
             alwaysOnTopMenuItem.Name = "alwaysOnTopMenuItem";
-            alwaysOnTopMenuItem.Size = new System.Drawing.Size(180, 22);
+            alwaysOnTopMenuItem.Size = new Size(180, 22);
             alwaysOnTopMenuItem.Text = "Always On Top";
             alwaysOnTopMenuItem.Click += alwaysOnTopMenuItem_Click;
             // 
-            // CalibrationItem
+            // helpMenuItem
             // 
-            CalibrationItem.Name = "CalibrationItem";
-            CalibrationItem.Size = new System.Drawing.Size(180, 22);
-            CalibrationItem.Text = "Calibration...";
-            CalibrationItem.Click += Calibration_Click;
+            helpMenuItem.Name = "helpMenuItem";
+            helpMenuItem.Size = new Size(180, 22);
+            helpMenuItem.Text = "Help";
+            helpMenuItem.Click += helpMenuItem_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem1.Size = new Size(177, 6);
             // 
             // CloseItem
             // 
             CloseItem.Name = "CloseItem";
-            CloseItem.Size = new System.Drawing.Size(180, 22);
+            CloseItem.Size = new Size(180, 22);
             CloseItem.Text = "Close";
             CloseItem.Click += Close_Click;
             // 
+            // toolStripMenuItem3
+            // 
+            toolStripMenuItem3.Name = "toolStripMenuItem3";
+            toolStripMenuItem3.Size = new Size(32, 19);
+            // 
+            // saveSessionToolStripMenuItem
+            // 
+            saveSessionToolStripMenuItem.Name = "saveSessionToolStripMenuItem";
+            saveSessionToolStripMenuItem.Size = new Size(32, 19);
+            saveSessionToolStripMenuItem.Text = "Save Session...";
+            // 
             // RulerForm
             // 
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            BackColor = System.Drawing.Color.LightYellow;
-            ClientSize = new System.Drawing.Size(800, 70);
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.LightYellow;
+            ClientSize = new Size(800, 70);
             ContextMenuStrip = contextMenuStrip1;
             DoubleBuffered = true;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
+            FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Name = "RulerForm";
             Opacity = 0.75D;
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Ruler";
             Resize += RulerForm_Resize;
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+        private System.Windows.Forms.ToolStripMenuItem saveSessionToolStripMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+
+        private System.Windows.Forms.ToolStripMenuItem saveSessionMenuItem;
 
         private System.Windows.Forms.ToolStripMenuItem alwaysOnTopMenuItem;
 
@@ -98,5 +149,7 @@ namespace ScreenRuler
 
 
 
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem helpMenuItem;
     }
 }

@@ -15,20 +15,36 @@
       "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:rulerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\calibrationsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:calibrationsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\calibrationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:calibrationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\state\\rulerstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:state\\rulerstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\calibrationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:calibrationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\calibrationform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:calibrationform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\shapes\\ishape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:shapes\\ishape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\shapes\\lineshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:shapes\\lineshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\shapes\\angleshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:shapes\\angleshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\shapes\\gridshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:shapes\\gridshape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\shapes\\markershape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:shapes\\markershape.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\drawinghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:drawinghelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,8 +54,111 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 8,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RulerState.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\State\\RulerState.cs",
+              "RelativeDocumentMoniker": "State\\RulerState.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\State\\RulerState.cs",
+              "RelativeToolTip": "State\\RulerState.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T08:13:37.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RulerForm.cs [Design]",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\RulerForm.cs",
+              "RelativeDocumentMoniker": "RulerForm.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\RulerForm.cs [Design]",
+              "RelativeToolTip": "RulerForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T08:11:21.086Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DrawingHelpers.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\DrawingHelpers.cs",
+              "RelativeDocumentMoniker": "DrawingHelpers.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\DrawingHelpers.cs",
+              "RelativeToolTip": "DrawingHelpers.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:43:54.696Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MarkerShape.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\MarkerShape.cs",
+              "RelativeDocumentMoniker": "Shapes\\MarkerShape.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\Shapes\\MarkerShape.cs",
+              "RelativeToolTip": "Shapes\\MarkerShape.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAACJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:27:36.669Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GridShape.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\GridShape.cs",
+              "RelativeDocumentMoniker": "Shapes\\GridShape.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\Shapes\\GridShape.cs",
+              "RelativeToolTip": "Shapes\\GridShape.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:27:28.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AngleShape.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\AngleShape.cs",
+              "RelativeDocumentMoniker": "Shapes\\AngleShape.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\Shapes\\AngleShape.cs",
+              "RelativeToolTip": "Shapes\\AngleShape.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAwE0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:27:18.802Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LineShape.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\LineShape.cs",
+              "RelativeDocumentMoniker": "Shapes\\LineShape.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\Shapes\\LineShape.cs",
+              "RelativeToolTip": "Shapes\\LineShape.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:26:55.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IShape.cs",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\IShape.cs",
+              "RelativeDocumentMoniker": "Shapes\\IShape.cs",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\Shapes\\IShape.cs",
+              "RelativeToolTip": "Shapes\\IShape.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T07:26:46.537Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -48,7 +167,7 @@
               "RelativeDocumentMoniker": "RulerForm.cs",
               "ToolTip": "F:\\Projects\\ScreenRuler\\RulerForm.cs",
               "RelativeToolTip": "RulerForm.cs",
-              "ViewState": "AgIAAFgAAAAAAAAAAAAYwHkAAABKAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAtwEkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-01T00:58:25.461Z",
               "EditorCaption": ""
@@ -61,72 +180,22 @@
               "RelativeDocumentMoniker": "RulerForm.Designer.cs",
               "ToolTip": "F:\\Projects\\ScreenRuler\\RulerForm.Designer.cs",
               "RelativeToolTip": "RulerForm.Designer.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAowFYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADoAAAAAAAAAAAAkwGYAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-01T00:37:18.542Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RulerForm.cs [Design]",
-              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\RulerForm.cs",
-              "RelativeDocumentMoniker": "RulerForm.cs",
-              "ToolTip": "F:\\Projects\\ScreenRuler\\RulerForm.cs [Design]",
-              "RelativeToolTip": "RulerForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T00:58:02.475Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CalibrationForm.Designer.cs",
-              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\CalibrationForm.Designer.cs",
-              "RelativeDocumentMoniker": "CalibrationForm.Designer.cs",
-              "ToolTip": "F:\\Projects\\ScreenRuler\\CalibrationForm.Designer.cs",
-              "RelativeToolTip": "CalibrationForm.Designer.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T00:57:20.181Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "CalibrationForm.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\CalibrationForm.cs",
               "RelativeDocumentMoniker": "CalibrationForm.cs",
               "ToolTip": "F:\\Projects\\ScreenRuler\\CalibrationForm.cs",
               "RelativeToolTip": "CalibrationForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-01T00:48:40.307Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CalibrationForm.cs [Design]",
-              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\CalibrationForm.cs",
-              "RelativeDocumentMoniker": "CalibrationForm.cs",
-              "ToolTip": "F:\\Projects\\ScreenRuler\\CalibrationForm.cs [Design]",
-              "RelativeToolTip": "CalibrationForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T00:41:04.097Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CalibrationSettings.cs",
-              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\CalibrationSettings.cs",
-              "RelativeDocumentMoniker": "CalibrationSettings.cs",
-              "ToolTip": "F:\\Projects\\ScreenRuler\\CalibrationSettings.cs",
-              "RelativeToolTip": "CalibrationSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T00:38:52.461Z",
               "EditorCaption": ""
             }
           ]
