@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalibrationForm));
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
@@ -93,6 +94,7 @@
             // 
             // btnCancel
             // 
+            btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             btnCancel.Location = new System.Drawing.Point(388, 65);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(98, 36);
@@ -113,8 +115,10 @@
             // 
             // CalibrationForm
             // 
+            AcceptButton = btnOk;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new System.Drawing.Size(519, 113);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
@@ -124,7 +128,13 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
             Text = "Calibration";
+            TopMost = true;
             ((System.ComponentModel.ISupportInitialize)numPixels).EndInit();
             ((System.ComponentModel.ISupportInitialize)numUnitsValue).EndInit();
             ResumeLayout(false);

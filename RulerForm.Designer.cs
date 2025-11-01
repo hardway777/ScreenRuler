@@ -7,9 +7,9 @@ namespace ScreenRuler
         /// </summary>
         private System.ComponentModel.IContainer components = null;
         private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem CalibrationItem;
+        private System.Windows.Forms.ToolStripMenuItem CalibrationItem;
         private ToolStripSeparator toolStripMenuItem1;
-        private ToolStripMenuItem CloseItem;
+        private System.Windows.Forms.ToolStripMenuItem CloseItem;
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
@@ -26,57 +26,57 @@ namespace ScreenRuler
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            contextMenuStrip1 = new ContextMenuStrip(components);
-            CalibrationItem = new ToolStripMenuItem();
-            toolStripMenuItem1 = new ToolStripSeparator();
-            CloseItem = new ToolStripMenuItem();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RulerForm));
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            CalibrationItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            CloseItem = new System.Windows.Forms.ToolStripMenuItem();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { CalibrationItem, toolStripMenuItem1, CloseItem });
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { CalibrationItem, toolStripMenuItem1, CloseItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(150, 54);
+            contextMenuStrip1.Size = new System.Drawing.Size(142, 54);
             // 
             // CalibrationItem
             // 
             CalibrationItem.Name = "CalibrationItem";
-            CalibrationItem.Size = new Size(149, 22);
-            CalibrationItem.Text = "Калибровка...";
+            CalibrationItem.Size = new System.Drawing.Size(141, 22);
+            CalibrationItem.Text = "Calibration...";
             CalibrationItem.Click += Calibration_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(146, 6);
+            toolStripMenuItem1.Size = new System.Drawing.Size(138, 6);
             // 
             // CloseItem
             // 
             CloseItem.Name = "CloseItem";
-            CloseItem.Size = new Size(149, 22);
-            CloseItem.Text = "Закрыть";
+            CloseItem.Size = new System.Drawing.Size(141, 22);
+            CloseItem.Text = "Close";
             CloseItem.Click += Close_Click;
             // 
             // RulerForm
             // 
-            AutoScaleMode = AutoScaleMode.None;
-            BackColor = Color.LightYellow;
-            ClientSize = new Size(800, 70);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.LightYellow;
+            ClientSize = new System.Drawing.Size(800, 70);
             ContextMenuStrip = contextMenuStrip1;
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.None;
-            Name = "RulerForm";
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Icon = ((System.Drawing.Icon)resources.GetObject("$this.Icon"));
             Opacity = 0.75D;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form1";
-            TopMost = true;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Ruler";
             Resize += RulerForm_Resize;
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

@@ -13,6 +13,7 @@
     <Product>Screen Ruler</Product>
     <AssemblyVersion>1.0</AssemblyVersion>
     <FileVersion>1.1</FileVersion>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
 </Project>
