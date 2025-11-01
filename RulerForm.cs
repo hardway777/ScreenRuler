@@ -7,12 +7,35 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ScreenRuler
 {
     public partial class RulerForm : Form
     {
+        #region Win32 API for Cursor Clipping
+        private static class NativeMethods
+        {
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool ClipCursor(ref RECT lpRect);
+
+            [DllImport("user32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool ClipCursor(IntPtr lpRect);
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct RECT
+            {
+                public int Left;
+                public int Top;
+                public int Right;
+                public int Bottom;
+            }
+        }
+        #endregion
+
         private Bitmap? _backgroundBitmap = null;
         private Point _backgroundBitmapOrigin = Point.Empty;
         private readonly double _defaultOpacity;
@@ -33,6 +56,7 @@ namespace ScreenRuler
         private Point? _snappedPoint = null;
         private bool _measureOuterAngle = false;
         private bool _showHelp = false;
+        private bool _isCursorLocked = false;
 
         private readonly List<Color> _lineColors = new List<Color>
         {
@@ -58,6 +82,12 @@ namespace ScreenRuler
             alwaysOnTopMenuItem.Checked = this.TopMost;
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            NativeMethods.ClipCursor(IntPtr.Zero);
+            base.OnFormClosing(e);
+        }
+
         #region Painting Logic
 
         protected override void OnPaint(PaintEventArgs e)
@@ -68,7 +98,6 @@ namespace ScreenRuler
 
             if (_backgroundBitmap != null)
             {
-
                 var sourceRect = new Rectangle(_canvasOffset, this.Size);
                 g.DrawImage(_backgroundBitmap, this.ClientRectangle, sourceRect, GraphicsUnit.Pixel);
 
@@ -132,6 +161,7 @@ namespace ScreenRuler
                     "",
                     "--- Precision Modifiers ---",
                     "[S] - Toggle Snap | [D] - Toggle Guides",
+                    "[Ctrl] - Lock Cursor Position",
                     "[Shift] - Lock Axis / Fast Pan / Viewport Drag",
                     "",
                     "--- Mouse Controls ---",
@@ -230,6 +260,7 @@ namespace ScreenRuler
             if (_isSnapEnabled) indicators.Add($"[S] Snap: {_snapRadius}px");
             if (_isGuidesEnabled) indicators.Add("[D] Guides");
             if (ModifierKeys.HasFlag(Keys.Shift) && _previewPoints.Count > 0) indicators.Add("[A] Axis Lock");
+            if (_isCursorLocked) indicators.Add("[Ctrl] Cursor Locked");
             if (_backgroundBitmap != null) indicators.Add("[C] Captured");
 
             var pos = new PointF(5, this.Height - (font.Height * 2) - 10);
@@ -367,6 +398,16 @@ namespace ScreenRuler
         {
             base.OnKeyDown(e);
 
+            if (e.KeyCode == Keys.ControlKey && !_isCursorLocked)
+            {
+                _isCursorLocked = true;
+                Point lockPos = Cursor.Position;
+                var clipRect = new NativeMethods.RECT { Left = lockPos.X, Top = lockPos.Y, Right = lockPos.X + 1, Bottom = lockPos.Y + 1 };
+                NativeMethods.ClipCursor(ref clipRect);
+                this.Invalidate();
+                return;
+            }
+
             int panAmount = e.Shift ? 10 : 1;
             bool canvasChanged = false;
             switch (e.KeyCode)
@@ -404,6 +445,17 @@ namespace ScreenRuler
                 ResetDrawingState();
             }
             this.Invalidate();
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            if (e.KeyCode == Keys.ControlKey && _isCursorLocked)
+            {
+                _isCursorLocked = false;
+                NativeMethods.ClipCursor(IntPtr.Zero);
+                this.Invalidate();
+            }
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -478,14 +530,15 @@ namespace ScreenRuler
             {
                 Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
 
-                this.Location = Point.Add(dragFormPoint, new Size(diff));
-
-
                 if (_backgroundBitmap != null && ModifierKeys.HasFlag(Keys.Shift))
                 {
+                    this.Location = Point.Add(dragFormPoint, new Size(diff));
                     _canvasOffset = Point.Add(_panStartCanvasOffset, new Size(diff));
                 }
-
+                else
+                {
+                    this.Location = Point.Add(dragFormPoint, new Size(diff));
+                }
 
                 this.Invalidate();
                 return;
