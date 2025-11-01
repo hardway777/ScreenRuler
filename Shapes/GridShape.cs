@@ -16,7 +16,7 @@ namespace ScreenRuler.Shapes
             var rect = RectangleShape.GetRectangle(P1, P2);
 
             using (var pen = new Pen(this.Color, 2))
-            using (var gridPen = new Pen(Color.FromArgb(160, this.Color), 1))
+            using (var gridPen = new Pen(Color.FromArgb(100, this.Color), 1))
             using (var brush = new SolidBrush(this.Color))
             {
                 g.DrawRectangle(pen, rect);
@@ -36,8 +36,17 @@ namespace ScreenRuler.Shapes
                     }
                 }
 
-                string text = $"Grid: {CellSize:F2}x{CellSize:F2} {CalibrationSettings.UnitName}";
-                g.DrawString(text, font, brush, rect.Location.X + 5, rect.Location.Y + 5);
+                double widthUnits = CalibrationSettings.ToUnits(rect.Width);
+                double heightUnits = CalibrationSettings.ToUnits(rect.Height);
+
+                string sizeText = $"W: {widthUnits:F2}, H: {heightUnits:F2}";
+                string cellText = $"Cell: {CellSize:F2}x{CellSize:F2} {CalibrationSettings.UnitName}";
+
+                var pos1 = new PointF(rect.Location.X + 5, rect.Location.Y + 5);
+                var pos2 = new PointF(rect.Location.X + 5, rect.Location.Y + 7 + font.Height);
+
+                DrawingHelpers.DrawStringWithShadow(g, sizeText, font, brush, pos1, Color.White);
+                DrawingHelpers.DrawStringWithShadow(g, cellText, font, brush, pos2, Color.White);
             }
         }
 
