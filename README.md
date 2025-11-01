@@ -4,8 +4,8 @@
 
 A versatile, on-screen measurement tool for Windows, built with C# and Windows Forms. Measure pixels, calibrate to real-world units, and get instant diagonal and angle calculations right on your screen. Perfect for designers, engineers, cartographers, and anyone who needs to measure objects within digital images, maps, or blueprints.
 
+![Advanced Screen Ruler in action](images/screenshot.png)
 
-*Note: You should replace the link above with a GIF or screenshot of your application in action.*
 
 ## ✨ Features
 
