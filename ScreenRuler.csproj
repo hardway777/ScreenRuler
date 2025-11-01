@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Hardway</Authors>
+    <Description>Screen Ruler - measure objects on screen</Description>
+    <Copyright>Hardway</Copyright>
+    <Company>Hardway</Company>
+    <Product>Screen Ruler</Product>
+    <AssemblyVersion>1.0</AssemblyVersion>
+    <FileVersion>1.1</FileVersion>
+  </PropertyGroup>
+
+</Project>
