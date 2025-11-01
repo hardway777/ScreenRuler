@@ -34,6 +34,7 @@ namespace ScreenRuler
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RulerForm));
             contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            alwaysOnTopMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             CalibrationItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             CloseItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,26 +43,34 @@ namespace ScreenRuler
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { CalibrationItem, toolStripMenuItem1, CloseItem });
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { alwaysOnTopMenuItem, CalibrationItem, toolStripMenuItem1, CloseItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(142, 54);
+            contextMenuStrip1.Size = new System.Drawing.Size(181, 98);
+            // 
+            // alwaysOnTopMenuItem
+            // 
+            alwaysOnTopMenuItem.CheckOnClick = true;
+            alwaysOnTopMenuItem.Name = "alwaysOnTopMenuItem";
+            alwaysOnTopMenuItem.Size = new System.Drawing.Size(180, 22);
+            alwaysOnTopMenuItem.Text = "Always On Top";
+            alwaysOnTopMenuItem.Click += alwaysOnTopMenuItem_Click;
             // 
             // CalibrationItem
             // 
             CalibrationItem.Name = "CalibrationItem";
-            CalibrationItem.Size = new System.Drawing.Size(141, 22);
+            CalibrationItem.Size = new System.Drawing.Size(180, 22);
             CalibrationItem.Text = "Calibration...";
             CalibrationItem.Click += Calibration_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(138, 6);
+            toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // CloseItem
             // 
             CloseItem.Name = "CloseItem";
-            CloseItem.Size = new System.Drawing.Size(141, 22);
+            CloseItem.Size = new System.Drawing.Size(180, 22);
             CloseItem.Text = "Close";
             CloseItem.Click += Close_Click;
             // 
@@ -81,6 +90,8 @@ namespace ScreenRuler
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+        private System.Windows.Forms.ToolStripMenuItem alwaysOnTopMenuItem;
 
         #endregion
 

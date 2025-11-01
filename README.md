@@ -6,18 +6,22 @@ A versatile, on-screen measurement tool for Windows, built with C# and Windows F
 
 ![Advanced Screen Ruler in action](images/screenshot.png)
 
-
 ## ✨ Features
 
 -   **On-Screen Measurement**: A semi-transparent, frameless window that you can drag and resize over any application.
--   **Custom Calibration**: Define your own scale (e.g., `150 pixels = 4.5 meters`) to measure anything in your preferred units. The tool does the conversion for you.
--   **Multi-Axis Ticks**: Displays horizontal and vertical tick marks on all four sides for precise alignment.
--   **Real-Time Info Hub**: A central display shows live calculations for:
-    -   **Width & Height**: The dimensions of the ruler in your calibrated units.
-    -   **Diagonal Length**: The diagonal measurement, calculated instantly.
-    -   **Angle**: The angle of the diagonal in degrees, perfect for checking slopes or gradients.
+-   **Custom Calibration**: Define your own scale (e.g., `150 pixels = 4.5 meters`) to measure anything in your preferred units.
+-   **Interactive Measurement Tool**:
+    -   Draw multiple measurement lines directly on the ruler.
+    -   Each line displays its length in real-time based on your calibration.
+    -   Lines are drawn with unique, cycling colors for clarity.
+    -   Clear all lines with a single middle-click.
+-   **Adaptive UI & Enhanced Visibility**:
+    -   The central info hub automatically switches between detailed, abbreviated, vertical, and single-line layouts depending on the ruler's size.
+    -   All measurement lines and text have a high-contrast outline, ensuring they are perfectly visible on any background.
+    -   Horizontal and vertical axes are color-coded for quick identification.
+-   **Real-Time Info Hub**: A central display shows live calculations for Width, Height, Diagonal Length, and Angle.
+-   **Toggleable "Always on Top"**: Easily toggle whether the ruler stays on top of other windows via the context menu.
 -   **Resizable & Draggable**: Easily move the ruler and resize it from any corner or edge.
--   **Always on Top**: Stays on top of other windows so you can measure without interruption.
 
 ## 🚀 Getting Started
 
@@ -25,7 +29,7 @@ You can either run the pre-compiled executable or build the project from the sou
 
 ### For Users (Pre-compiled)
 
-1.  Go to the [**Releases**]([[https://github.com/hardway777/ScreenRuler/releases](https://github.com/hardway777/ScreenRuler/releases)) page of this repository.
+1.  Go to the [**Releases**](https://github.com/hardway777/ScreenRuler/releases) page of this repository.
 2.  Download the latest `.zip` file.
 3.  Extract the contents and run `ScreenRuler.exe`.
 
@@ -51,17 +55,31 @@ You can either run the pre-compiled executable or build the project from the sou
 
 ## 📖 How to Use
 
-1.  **Launch** the application. The ruler will appear on your screen.
-2.  **Drag** the ruler by clicking and holding the left mouse button anywhere inside its body.
+1.  **Launch** the application.
+2.  **Drag** the ruler by left-clicking and holding anywhere inside its body.
 3.  **Resize** the ruler by dragging its edges or corners.
-4.  **Right-click** anywhere on the ruler to open the context menu.
-5.  Select **"Calibration..."** to open the settings dialog:
-    -   Enter a number of **pixels**.
-    -   Enter the corresponding **value** in your desired units.
-    -   Enter the **unit name** (e.g., "meters", "ft", "cm").
-    -   Click **OK**.
-6.  The ruler will instantly update its tick marks and the central information hub will display all measurements based on your new scale.
-7.  To close the application, right-click and select **"Close"**.
+4.  **Right-click** to open the context menu for **Calibration**, **Always on Top**, or to **Close** the app.
+5.  **Left-click** once to start drawing a measurement line. A dashed preview will follow your cursor.
+6.  **Left-click** a second time to finish the line.
+7.  **Middle-click** while drawing to cancel the current line.
+8.  **Middle-click** on an empty area to clear all finished lines.
+
+## Changelog
+
+### v1.1 - The Annotation Update
+This major update transforms the ruler from a passive measurement grid into an active annotation tool.
+
+-   **New Features:**
+    -   Implemented an interactive multi-line measurement tool.
+    -   Added a dynamic preview line that follows the cursor during measurement.
+    -   Introduced an adaptive UI for the central info hub (abbreviated, vertical, and single-line modes).
+    -   Added a toggleable "Always on Top" option in the context menu.
+-   **Improvements & Fixes:**
+    -   Added high-contrast outlines to all measurement lines and text for superior visibility.
+    -   Color-coded the horizontal and vertical axes for easier differentiation.
+    -   Improved measurement precision by fixing `double`/`int` type conversions.
+    -   Updated the measurement line color palette to avoid conflicts with the default background color.
+    -   Added the ability to cancel drawing a line with a middle-click.
 
 ## 🤝 Contributing
 

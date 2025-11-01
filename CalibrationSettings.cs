@@ -10,9 +10,15 @@ namespace ScreenRuler
     {
         public static double Pixels { get; set; } = 100;
         public static double UnitsValue { get; set; } = 1.0;
-        public static string UnitName { get; set; } = "m";
+        public static string UnitName { get; set; } = "units";
 
         public static double ToUnits(int pixels)
+        {
+            if (Pixels == 0) return 0;
+            return (pixels / Pixels) * UnitsValue;
+        }
+        
+        public static double ToUnits(double pixels)
         {
             if (Pixels == 0) return 0;
             return (pixels / Pixels) * UnitsValue;
