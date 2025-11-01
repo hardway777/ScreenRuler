@@ -65,6 +65,7 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
 -   **Mouse Wheel**: Adjusts the context-sensitive value (Snap Radius, Grid Cell Size, or Angle Type).
 -   **Shift + Mouse Wheel**: Adjusts the background overlay opacity in capture mode.
 -   **Right Click**: Opens the context menu.
+-   **CTRL**: Lock mouse cursor
 
 ### Keyboard Hotkeys
 -   **Drawing Modes**:
@@ -87,6 +88,8 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   `H`: Toggle the help screen.
 
 ## Changelog
+### v3.1
+-  Added lock mouse cursor by CTRL.
 
 ### v3.0 - The Precision CAD Update
 This version transforms the ruler into a full-fledged 2D measurement and annotation tool with a pannable canvas, multiple drawing modes, and advanced precision features.
