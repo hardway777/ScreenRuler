@@ -66,7 +66,7 @@ You can either run the pre-compiled executable or build the project from the sou
 
 ## Changelog
 
-### v1.1 - The Annotation Update
+### v2.0 - The Annotation Update
 This major update transforms the ruler from a passive measurement grid into an active annotation tool.
 
 -   **New Features:**
