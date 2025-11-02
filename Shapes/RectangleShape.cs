@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -18,15 +18,30 @@ namespace ScreenRuler.Shapes
                 var rect = GetRectangle(P1, P2);
                 g.DrawRectangle(pen, rect);
 
-                double widthUnits = CalibrationSettings.ToUnits(rect.Width);
-                double heightUnits = CalibrationSettings.ToUnits(rect.Height);
-                string text = $"W: {widthUnits:F2}\nH: {heightUnits:F2}";
-                
-                using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                {
-                    DrawingHelpers.DrawStringWithShadow(g, text, font, brush, rect, sf, Color.White);
-                }
+                var p1 = new Point(rect.Left, rect.Top);
+                var p2 = new Point(rect.Right, rect.Top);
+                var p3 = new Point(rect.Right, rect.Bottom);
+                var p4 = new Point(rect.Left, rect.Bottom);
+
+                DrawSide(g, font, brush, p1, p2); // Top
+                DrawSide(g, font, brush, p2, p3); // Right
+                DrawSide(g, font, brush, p4, p3); // Bottom
+                DrawSide(g, font, brush, p1, p4); // Left
             }
+        }
+
+        private void DrawSide(Graphics g, Font font, Brush brush, Point p1, Point p2)
+        {
+            double distanceInPixels = Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+            if (distanceInPixels < 20) return;
+
+            double distanceInUnits = CalibrationSettings.ToUnits(distanceInPixels);
+            string text = $"{distanceInUnits:F2}";
+
+            var midpoint = new PointF((p1.X + p2.X) / 2.0f, (p1.Y + p2.Y) / 2.0f);
+            float angle = (float)(Math.Atan2(p2.Y - p1.Y, p2.X - p1.X) * 180.0 / Math.PI);
+
+            DrawingHelpers.DrawRotatedStringWithBox(g, text, font, brush, midpoint, angle);
         }
 
         public static Rectangle GetRectangle(Point p1, Point p2)

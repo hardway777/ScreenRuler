@@ -227,10 +227,10 @@ namespace ScreenRuler
                 switch (_currentMode)
                 {
                     case DrawingMode.Lines when _previewPoints.Count == 1:
-                        LineShape.DrawLineWithLength(g, pen, brush, font, _previewPoints[0], canvasMousePosition);
+                        DrawingHelpers.DrawLineWithLength(g, pen, brush, font, _previewPoints[0], canvasMousePosition);
                         break;
                     case DrawingMode.Angles when _previewPoints.Count == 1:
-                        LineShape.DrawLineWithLength(g, pen, brush, font, _previewPoints[0], canvasMousePosition);
+                        DrawingHelpers.DrawLineWithLength(g, pen, brush, font, _previewPoints[0], canvasMousePosition);
                         break;
                     case DrawingMode.Angles when _previewPoints.Count == 2:
                         AngleShape.DrawAngle(g, pen, brush, font, _previewPoints[0], _previewPoints[1], canvasMousePosition, _measureOuterAngle);

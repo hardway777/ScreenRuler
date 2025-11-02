@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -21,10 +21,7 @@ namespace ScreenRuler.Shapes
                 double radiusUnits = CalibrationSettings.ToUnits(this.Radius);
                 string text = $"R: {radiusUnits:F2} {CalibrationSettings.UnitName}";
                 
-                using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                {
-                    DrawingHelpers.DrawStringWithShadow(g, text, font, brush, Center, sf, Color.White);
-                }
+                DrawingHelpers.DrawStringWithBox(g, text, font, brush, Center);
             }
         }
 

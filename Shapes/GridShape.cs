@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Collections.Generic;
 
 namespace ScreenRuler.Shapes
@@ -40,10 +40,8 @@ namespace ScreenRuler.Shapes
 
                 string text = $"W: {widthUnits:F2}, H: {heightUnits:F2}\nCell: {CellSize:F2} {CalibrationSettings.UnitName}";
                 
-                using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                {
-                    DrawingHelpers.DrawStringWithShadow(g, text, font, brush, rect, sf, Color.White);
-                }
+                var textPosition = new PointF(rect.X + rect.Width / 2.0f, rect.Y + rect.Height / 2.0f);
+                DrawingHelpers.DrawStringWithBox(g, text, font, brush, textPosition);
             }
         }
 

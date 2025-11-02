@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -23,8 +23,10 @@ namespace ScreenRuler.Shapes
 
         public static void DrawAngle(Graphics g, Pen pen, Brush brush, Font font, Point p1, Point vertex, Point p3, bool measureOuter)
         {
-            LineShape.DrawLineWithLength(g, pen, brush, font, p1, vertex);
-            LineShape.DrawLineWithLength(g, pen, brush, font, vertex, p3);
+            DrawingHelpers.DrawLineWithLength(g, pen, brush, font, p1, vertex);
+            DrawingHelpers.DrawLineWithLength(g, pen, brush, font, vertex, p3);
+            
+            g.FillEllipse(brush, vertex.X - 4, vertex.Y - 4, 8, 8);
 
             double angleRad1 = Math.Atan2(p1.Y - vertex.Y, p1.X - vertex.X);
             double angleRad3 = Math.Atan2(p3.Y - vertex.Y, p3.X - vertex.X);
@@ -53,16 +55,13 @@ namespace ScreenRuler.Shapes
 
             string text = $"{angleDeg:F1}°";
             double bisectorRad = angleRad1 + sweepRad / 2;
-            float textDist = arcRadius * 0.7f; // Помещаем текст внутрь дуги
+            float textDist = arcRadius * 0.7f;
             var textPosition = new PointF(
                 vertex.X + textDist * (float)Math.Cos(bisectorRad),
                 vertex.Y + textDist * (float)Math.Sin(bisectorRad)
             );
             
-            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-            {
-                DrawingHelpers.DrawStringWithShadow(g, text, font, brush, textPosition, sf, Color.White);
-            }
+            DrawingHelpers.DrawStringWithBox(g, text, font, brush, textPosition);
         }
 
         public IEnumerable<Point> GetSnapPoints()

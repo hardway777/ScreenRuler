@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Collections.Generic;
 
 namespace ScreenRuler.Shapes
@@ -21,7 +21,7 @@ namespace ScreenRuler.Shapes
                 double yUnits = CalibrationSettings.ToUnits(Position.Y);
                 string text = $"({xUnits:F1}, {yUnits:F1})";
                 
-                DrawingHelpers.DrawStringWithShadow(g, text, font, brush, new PointF(Position.X + size, Position.Y + size), Color.White);
+                DrawingHelpers.DrawStringWithBox(g, text, font, brush, new PointF(Position.X, Position.Y - size - font.Height));
             }
         }
 
