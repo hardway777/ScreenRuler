@@ -5,45 +5,51 @@ namespace ScreenRuler
 {
     public partial class CalibrationForm : Form
     {
-        private readonly int _currentRulerWidth;
-        
-        public CalibrationForm(int currentRulerWidth)
+        private readonly int _rulerWidth;
+        private readonly double? _predefinedPixels;
+
+        public CalibrationForm(int currentRulerWidth, double? predefinedPixels = null)
         {
             InitializeComponent();
-            _currentRulerWidth = currentRulerWidth;
+            _rulerWidth = currentRulerWidth;
+            _predefinedPixels = predefinedPixels;
             LoadSettings();
         }
-        
+
         private void LoadSettings()
         {
-            numPixels.Value = _currentRulerWidth;
-            
-            double oldPixels = CalibrationSettings.Pixels;
-            double oldUnits = CalibrationSettings.UnitsValue;
-
-            if (oldPixels > 0)
+            if (_predefinedPixels.HasValue)
             {
-                decimal correspondingUnits = (decimal)((_currentRulerWidth / oldPixels) * oldUnits);
-                numUnitsValue.Value = correspondingUnits;
+                numPixels.Value = (decimal)_predefinedPixels.Value;
+                numUnitsValue.Select();
             }
             else
             {
-                numUnitsValue.Value = (decimal)CalibrationSettings.UnitsValue;
+                numPixels.Value = _rulerWidth;
+                double oldPixels = CalibrationSettings.Pixels;
+                double oldUnits = CalibrationSettings.UnitsValue;
+                if (oldPixels > 0)
+                {
+                    decimal correspondingUnits = (decimal)((_rulerWidth / oldPixels) * oldUnits);
+                    numUnitsValue.Value = correspondingUnits;
+                }
+                else
+                {
+                    numUnitsValue.Value = (decimal)CalibrationSettings.UnitsValue;
+                }
             }
-            
             txtUnitName.Text = CalibrationSettings.UnitName;
         }
-        
+
         private void btnOk_Click(object sender, EventArgs e)
         {
             CalibrationSettings.Pixels = (double)numPixels.Value;
             CalibrationSettings.UnitsValue = (double)numUnitsValue.Value;
             CalibrationSettings.UnitName = txtUnitName.Text;
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
-        
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

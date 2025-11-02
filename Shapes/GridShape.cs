@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 namespace ScreenRuler.Shapes
@@ -39,14 +38,12 @@ namespace ScreenRuler.Shapes
                 double widthUnits = CalibrationSettings.ToUnits(rect.Width);
                 double heightUnits = CalibrationSettings.ToUnits(rect.Height);
 
-                string sizeText = $"W: {widthUnits:F2}, H: {heightUnits:F2}";
-                string cellText = $"Cell: {CellSize:F2}x{CellSize:F2} {CalibrationSettings.UnitName}";
-
-                var pos1 = new PointF(rect.Location.X + 5, rect.Location.Y + 5);
-                var pos2 = new PointF(rect.Location.X + 5, rect.Location.Y + 7 + font.Height);
-
-                DrawingHelpers.DrawStringWithShadow(g, sizeText, font, brush, pos1, Color.White);
-                DrawingHelpers.DrawStringWithShadow(g, cellText, font, brush, pos2, Color.White);
+                string text = $"W: {widthUnits:F2}, H: {heightUnits:F2}\nCell: {CellSize:F2} {CalibrationSettings.UnitName}";
+                
+                using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                {
+                    DrawingHelpers.DrawStringWithShadow(g, text, font, brush, rect, sf, Color.White);
+                }
             }
         }
 

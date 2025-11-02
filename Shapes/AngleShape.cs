@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 namespace ScreenRuler.Shapes
@@ -29,10 +28,8 @@ namespace ScreenRuler.Shapes
 
             double angleRad1 = Math.Atan2(p1.Y - vertex.Y, p1.X - vertex.X);
             double angleRad3 = Math.Atan2(p3.Y - vertex.Y, p3.X - vertex.X);
-
             double sweepRad = angleRad3 - angleRad1;
-
-            // Normalize sweep to be between -PI and +PI (-180 to 180 degrees)
+            
             while (sweepRad <= -Math.PI) sweepRad += 2 * Math.PI;
             while (sweepRad > Math.PI) sweepRad -= 2 * Math.PI;
 
@@ -41,7 +38,6 @@ namespace ScreenRuler.Shapes
             if (measureOuter)
             {
                 angleDeg = 360 - angleDeg;
-                // Reverse the direction and draw the long way around
                 sweepRad = (2 * Math.PI - Math.Abs(sweepRad)) * -Math.Sign(sweepRad);
             }
 
@@ -50,8 +46,6 @@ namespace ScreenRuler.Shapes
 
             int arcRadius = 30;
             var rect = new Rectangle(vertex.X - arcRadius, vertex.Y - arcRadius, arcRadius * 2, arcRadius * 2);
-
-            // Safety check to prevent GDI+ error
             if (rect.Width > 0 && rect.Height > 0)
             {
                 g.DrawArc(pen, rect, startAngle, sweepAngle);
@@ -59,13 +53,16 @@ namespace ScreenRuler.Shapes
 
             string text = $"{angleDeg:F1}°";
             double bisectorRad = angleRad1 + sweepRad / 2;
-            float textDist = arcRadius + 10;
+            float textDist = arcRadius * 0.7f; // Помещаем текст внутрь дуги
             var textPosition = new PointF(
                 vertex.X + textDist * (float)Math.Cos(bisectorRad),
                 vertex.Y + textDist * (float)Math.Sin(bisectorRad)
             );
-
-            DrawingHelpers.DrawStringWithShadow(g, text, font, brush, textPosition, Color.White);
+            
+            using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+            {
+                DrawingHelpers.DrawStringWithShadow(g, text, font, brush, textPosition, sf, Color.White);
+            }
         }
 
         public IEnumerable<Point> GetSnapPoints()

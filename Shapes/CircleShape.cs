@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 namespace ScreenRuler.Shapes
@@ -21,10 +20,14 @@ namespace ScreenRuler.Shapes
 
                 double radiusUnits = CalibrationSettings.ToUnits(this.Radius);
                 string text = $"R: {radiusUnits:F2} {CalibrationSettings.UnitName}";
-                g.DrawString(text, font, brush, Center.X + 5, Center.Y + 5);
+                
+                using (var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                {
+                    DrawingHelpers.DrawStringWithShadow(g, text, font, brush, Center, sf, Color.White);
+                }
             }
         }
-        
+
         public IEnumerable<Point> GetSnapPoints()
         {
             yield return Center;

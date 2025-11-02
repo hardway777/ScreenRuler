@@ -7,6 +7,7 @@
         Circles,
         Rectangles,
         Grid,
-        Markers
+        Markers,
+        Recalibrate
     }
 }

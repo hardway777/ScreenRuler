@@ -24,16 +24,22 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   **Snap to Points (S)**: Automatically snap the cursor to the nearest point of any existing shape. Snap radius is adjustable.
     -   **Guides (D)**: Display alignment guides when the cursor is horizontally or vertically aligned with other snap points.
     -   **Axis Lock (Shift)**: Restrict drawing to horizontal or vertical axes.
+    -   **Cursor Lock (Ctrl)**: Hold to lock the cursor's position for precise clicks.
 
 -   **Canvas & Background Capture**: Work on a static image of your screen.
     -   **Capture (C)**: Take a screenshot of the current monitor to use as a static background. The ruler becomes fully opaque for clarity.
-    -   **Pannable Canvas**: Pan the background and all drawn shapes using the **Arrow Keys** or by dragging with the mouse.
-    -   **Viewport Drag (Shift + Drag)**: Move the ruler window independently over the static canvas, like a camera viewport.
+    -   **Pannable Canvas**: Pan the background and all drawn shapes using the **Arrow Keys**.
+    -   **Two Drag Modes**:
+        -   **Default Drag**: Moves the window and the canvas together.
+        -   **Viewport Drag (Shift + Drag)**: Moves only the window over the static canvas, like a camera viewport.
     -   **Adjustable Overlay**: Use **Shift + Mouse Wheel** to change the opacity of the color overlay for perfect contrast.
     -   **Clear (X)**: Remove the background and return to live mode.
 
+-   **Interactive Recalibration (R)**: Enter Recalibration mode, click on any drawn line, and enter its real-world length to instantly recalibrate the entire canvas.
+
 -   **Full Session Management**: Never lose your work.
-    -   **Save/Load Session**: Save all your drawn shapes, window position, size, and calibration settings to a JSON file. Load it back anytime.
+    -   **Save/Load Session**: Save all your drawn shapes, window position, size, canvas pan, and calibration settings to a single `.sez` (Session Zipped) file. The captured background is included in the save file.
+    -   **File Association**: Opens `.sez` files passed as a command-line argument.
 
 -   **In-App Help & UI Enhancements**:
     -   Press **H** to toggle an on-screen help panel with all hotkeys.
@@ -47,6 +53,7 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
 1.  Go to the [**Releases**](https://github.com/hardway777/ScreenRuler/releases) page of this repository.
 2.  Download the latest `.zip` file.
 3.  Extract the contents and run `ScreenRuler.exe`.
+4.  (Optional) To associate `.sez` files, right-click a `.sez` file, choose "Open with" > "Choose another app", find and select `ScreenRuler.exe`, and check "Always use this app".
 
 ### For Developers (Building from Source)
 *Requires .NET 6.0+ and Visual Studio 2022.*
@@ -58,14 +65,14 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
 
 ### Mouse Controls
 -   **Left Click**: Place a point for the current drawing mode.
--   **Left Drag**: Pan the window and canvas together (or just the window with `Shift` in capture mode).
+-   **Left Drag**: Pans the window and canvas together.
+-   **Shift + Left Drag**: Pans only the window (viewport mode).
 -   **Middle Click**:
     -   *While drawing*: Cancels the current shape.
     -   *On empty area*: Clears all drawn shapes.
 -   **Mouse Wheel**: Adjusts the context-sensitive value (Snap Radius, Grid Cell Size, or Angle Type).
 -   **Shift + Mouse Wheel**: Adjusts the background overlay opacity in capture mode.
 -   **Right Click**: Opens the context menu.
--   **CTRL**: Lock mouse cursor
 
 ### Keyboard Hotkeys
 -   **Drawing Modes**:
@@ -75,10 +82,12 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   `4`: Rectangles
     -   `5`: Grid
     -   `*`: Markers
+    -   `R`: Recalibrate by Line
 -   **Precision Modifiers**:
     -   `S`: Toggle Snap to Points.
     -   `D`: Toggle Guides.
     -   `Shift`: Hold while drawing to lock to an axis.
+    -   `Ctrl`: Hold to lock the cursor's current position.
 -   **Canvas & Background**:
     -   `C`: Capture the current monitor's screen as a background.
     -   `X`: Clear the captured background.
@@ -88,38 +97,49 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   `H`: Toggle the help screen.
 
 ## Changelog
+
+### v4.0
+-   **New Features:**
+    -   Added interactive recalibration mode (`R`) to set scale based on a drawn line.
+    -   Added session saving/loading to a compressed `.sez` file, including the captured background image.
+    -   The application can now open `.sez` files passed as command-line arguments.
+-   **Improvements & Fixes:**
+    -   Reworked mouse drag logic for intuitive canvas vs. viewport panning.
+    -   Improved grid tool with smart defaults and smoother, proportional resizing.
+    -   Improved text positioning for all shapes for better readability.
+    -   Fixed a UI bug where status text could overlap with the ruler scale.
+	
 ### v3.1
--  Added lock mouse cursor by CTRL.
+-   **New Features:**
+    -   Added cursor lock by holding `Ctrl` for precise point placement.
 
 ### v3.0 - The Precision CAD Update
-This version transforms the ruler into a full-fledged 2D measurement and annotation tool with a pannable canvas, multiple drawing modes, and advanced precision features.
+This version transformed the ruler into a full-fledged 2D measurement and annotation tool with a pannable canvas, multiple drawing modes, and advanced precision features.
 
 -   **New Features:**
     -   **Multiple Drawing Modes**: Added tools for measuring Angles, Circles, Rectangles, Grids, and placing Markers.
     -   **Background Capture System**: Added the ability to capture the screen and use it as a static, pannable canvas.
     -   **Precision Modifiers**: Implemented Snap-to-Point (`S`), Guides (`D`), and Axis Lock (`Shift`).
-    -   **Full Session Management**: Added Save/Load functionality for all settings and drawn shapes.
     -   **In-App Help Screen**: A new help panel (`H`) displays all hotkeys.
 -   **Improvements & Fixes:**
-    -   **Advanced Mouse Controls**: Reworked mouse logic to distinguish between clicks and drags. Implemented `Shift`+Drag for viewport panning.
-    -   **Contextual Adjustments**: The mouse wheel now dynamically adjusts Snap Radius, Grid Cell Size, or Angle Type.
+    -   **Advanced Mouse Controls**: Reworked mouse logic to distinguish between clicks and drags.
+    -   **Contextual Adjustments**: The mouse wheel now dynamically adjusts values.
     -   **Enhanced Readability**: All text now has a high-contrast shadow.
-    -   **UX Refinements**: Added physical cursor snapping, improved angle text positioning, and implemented a smart default for grid size.
+    -   **UX Refinements**: Added physical cursor snapping.
     -   Fixed a critical `OutOfMemoryException` related to angle drawing.
-    -   Fixed numerous bugs related to UI overlap and coordinate calculations.
 
 ### v2.0 - The Annotation Update
 This major update transformed the ruler from a passive measurement grid into an active annotation tool.
 
 -   **New Features:**
     -   Implemented an interactive multi-line measurement tool.
-    -   Added a dynamic preview line that follows the cursor during measurement.
+    -   Added a dynamic preview line that follows the cursor.
     -   Introduced an adaptive UI for the central info hub.
-    -   Added a toggleable "Always on Top" option in the context menu.
+    -   Added a toggleable "Always on Top" option.
 -   **Improvements & Fixes:**
-    -   Added high-contrast outlines to all measurement lines and text.
+    -   Added high-contrast outlines to measurement lines and text.
     -   Color-coded the horizontal and vertical axes.
-    -   Improved measurement precision by fixing `double`/`int` type conversions.
+    -   Improved measurement precision.
 
 ## 🤝 Contributing
 

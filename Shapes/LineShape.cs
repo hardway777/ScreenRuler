@@ -30,7 +30,9 @@ namespace ScreenRuler.Shapes
             string text = $"{distanceInUnits:F2} {CalibrationSettings.UnitName}";
 
             Point textPosition = new Point(p2.X + 5, p2.Y + 5);
-            g.DrawString(text, font, brush, textPosition);
+            var sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+            DrawingHelpers.DrawStringWithShadow(g, text, font, brush, textPosition, sf, Color.White);
+            //g.DrawString(text, font, brush, textPosition);
         }
 
         public IEnumerable<Point> GetSnapPoints()

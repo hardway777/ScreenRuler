@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -36,6 +38,8 @@ namespace ScreenRuler
         }
         #endregion
 
+        private readonly string? _initialFilePath;
+
         private Bitmap? _backgroundBitmap = null;
         private Point _backgroundBitmapOrigin = Point.Empty;
         private readonly double _defaultOpacity;
@@ -57,6 +61,7 @@ namespace ScreenRuler
         private bool _measureOuterAngle = false;
         private bool _showHelp = false;
         private bool _isCursorLocked = false;
+        private LineShape? _hoveredLine = null;
 
         private readonly List<Color> _lineColors = new List<Color>
         {
@@ -74,18 +79,28 @@ namespace ScreenRuler
         private const int VerticalLayoutMinWidth = 100;
 
 
-        public RulerForm()
+        public RulerForm(string? filePath = null)
         {
             InitializeComponent();
+            _initialFilePath = filePath;
             this.KeyPreview = true;
             _defaultOpacity = this.Opacity;
             alwaysOnTopMenuItem.Checked = this.TopMost;
+            this.Load += RulerForm_Load;
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             NativeMethods.ClipCursor(IntPtr.Zero);
             base.OnFormClosing(e);
+        }
+
+        private void RulerForm_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_initialFilePath) && File.Exists(_initialFilePath))
+            {
+                LoadSession(_initialFilePath);
+            }
         }
 
         #region Painting Logic
@@ -135,7 +150,7 @@ namespace ScreenRuler
 
                     DrawPreviewShape(g, font);
                     DrawSnapIndicator(g);
-
+                    
                     g.Restore(savedState);
 
                     DrawGuides(g);
@@ -158,6 +173,7 @@ namespace ScreenRuler
                     "--- Drawing Modes ---",
                     "[1] - Lines | [2] - Angles | [3] - Circles",
                     "[4] - Rectangles | [5] - Grid | [*] - Markers",
+                    "[R] - Recalibrate by Line",
                     "",
                     "--- Precision Modifiers ---",
                     "[S] - Toggle Snap | [D] - Toggle Guides",
@@ -191,9 +207,17 @@ namespace ScreenRuler
             }
         }
 
-        // ... (все остальные методы отрисовки остаются без изменений) ...
         private void DrawPreviewShape(Graphics g, Font font)
         {
+            if (_currentMode == DrawingMode.Recalibrate && _hoveredLine != null)
+            {
+                using (var highlightPen = new Pen(Color.Cyan, 4))
+                {
+                    g.DrawLine(highlightPen, _hoveredLine.P1, _hoveredLine.P2);
+                }
+                return;
+            }
+
             if (_previewPoints.Count == 0) return;
             Color nextColor = _lineColors[_lineColorIndex];
             using (var pen = new Pen(nextColor, 2) { DashStyle = DashStyle.Dash })
@@ -253,7 +277,7 @@ namespace ScreenRuler
                 }
             }
         }
-
+        
         private void DrawUIIndicators(Graphics g, Brush brush, Font font)
         {
             var indicators = new List<string> { $"Mode: {_currentMode}" };
@@ -262,16 +286,16 @@ namespace ScreenRuler
             if (ModifierKeys.HasFlag(Keys.Shift) && _previewPoints.Count > 0) indicators.Add("[A] Axis Lock");
             if (_isCursorLocked) indicators.Add("[Ctrl] Cursor Locked");
             if (_backgroundBitmap != null) indicators.Add("[C] Captured");
-
-            var pos = new PointF(5, this.Height - (font.Height * 2) - 10);
-
+            
+            var pos = new PointF(5, this.Height - (font.Height * 2) - 10); 
+            
             DrawingHelpers.DrawStringWithShadow(g, string.Join(" | ", indicators), font, brush, pos, Color.White);
 
             string contextText = "";
             if (_isSnapEnabled) contextText = $"Snap Radius: {_snapRadius}px";
             else if (_currentMode == DrawingMode.Grid && _previewPoints.Count == 1) contextText = $"Cell Size: {_gridCellSize:F1} {CalibrationSettings.UnitName}";
             else if (_currentMode == DrawingMode.Angles && _previewPoints.Count == 2) contextText = _measureOuterAngle ? "Outer Angle" : "Inner Angle";
-
+            
             if (!string.IsNullOrEmpty(contextText))
             {
                 var contextPos = new PointF(_currentMousePosition.X + 15, _currentMousePosition.Y + 15);
@@ -371,7 +395,7 @@ namespace ScreenRuler
                 }
             }
         }
-
+        
         private void RulerForm_Resize(object sender, EventArgs e)
         {
             this.Invalidate();
@@ -407,7 +431,7 @@ namespace ScreenRuler
                 this.Invalidate();
                 return;
             }
-
+            
             int panAmount = e.Shift ? 10 : 1;
             bool canvasChanged = false;
             switch (e.KeyCode)
@@ -438,6 +462,7 @@ namespace ScreenRuler
                 case Keys.H: _showHelp = !_showHelp; break;
                 case Keys.C: CaptureScreen(); break;
                 case Keys.X: ClearBackground(); break;
+                case Keys.R: newMode = DrawingMode.Recalibrate; break;
             }
             if (newMode != _currentMode)
             {
@@ -514,6 +539,14 @@ namespace ScreenRuler
             base.OnMouseMove(e);
             Point processedMousePosition = e.Location;
             _snappedPoint = null;
+            _hoveredLine = null;
+
+            if (_currentMode == DrawingMode.Recalibrate)
+            {
+                _hoveredLine = FindClosestLine(Point.Add(e.Location, new Size(_canvasOffset)));
+                this.Invalidate();
+                return;
+            }
 
             if (e.Button == MouseButtons.Left && _isPotentialClick)
             {
@@ -529,7 +562,7 @@ namespace ScreenRuler
             if (isDragging)
             {
                 Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
-
+                
                 if (_backgroundBitmap != null && ModifierKeys.HasFlag(Keys.Shift))
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
@@ -539,11 +572,11 @@ namespace ScreenRuler
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
                 }
-
+                
                 this.Invalidate();
                 return;
             }
-
+            
             if (_previewPoints.Count > 0)
             {
                 if (ModifierKeys.HasFlag(Keys.Shift))
@@ -554,7 +587,7 @@ namespace ScreenRuler
                     if (dx > dy) processedMousePosition.Y = startPoint.Y;
                     else processedMousePosition.X = startPoint.X;
                 }
-
+                
                 if (_isSnapEnabled)
                 {
                     Point canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
@@ -581,7 +614,7 @@ namespace ScreenRuler
                     if (Math.Abs(processedMousePosition.Y - screenPoint.Y) < 2) processedMousePosition.Y = screenPoint.Y;
                 }
             }
-
+            
             _currentMousePosition = processedMousePosition;
             this.Invalidate();
         }
@@ -599,9 +632,28 @@ namespace ScreenRuler
                 _isPotentialClick = false;
             }
         }
-
+        
         private void HandleMouseClickLogic(MouseEventArgs e)
         {
+            if (_currentMode == DrawingMode.Recalibrate)
+            {
+                if (_hoveredLine != null)
+                {
+                    double lengthInPixels = Math.Sqrt(Math.Pow(_hoveredLine.P2.X - _hoveredLine.P1.X, 2) + Math.Pow(_hoveredLine.P2.Y - _hoveredLine.P1.Y, 2));
+                    using (var calibForm = new CalibrationForm(this.Width, lengthInPixels))
+                    {
+                        if (calibForm.ShowDialog() == DialogResult.OK)
+                        {
+                            this.Invalidate();
+                        }
+                    }
+                    _currentMode = DrawingMode.Lines;
+                    _hoveredLine = null;
+                    this.Invalidate();
+                }
+                return;
+            }
+
             Point canvasMousePosition = Point.Add(_currentMousePosition, new Size(_canvasOffset));
             _previewPoints.Add(canvasMousePosition);
 
@@ -609,11 +661,10 @@ namespace ScreenRuler
             {
                 case DrawingMode.Lines: HandleShapeCompletion(2, () => new LineShape { P1 = _previewPoints[0], P2 = _previewPoints[1], Color = GetNextColor() }); break;
                 case DrawingMode.Angles: HandleShapeCompletion(3, () => new AngleShape { P1 = _previewPoints[0], Vertex = _previewPoints[1], P3 = _previewPoints[2], Color = GetNextColor(), MeasureOuterAngle = _measureOuterAngle }); break;
-                case DrawingMode.Circles:
-                    HandleShapeCompletion(2, () => {
-                        double radius = Math.Sqrt(Math.Pow(_previewPoints[1].X - _previewPoints[0].X, 2) + Math.Pow(_previewPoints[1].Y - _previewPoints[0].Y, 2));
-                        return new CircleShape { Center = _previewPoints[0], Radius = radius, Color = GetNextColor() };
-                    }); break;
+                case DrawingMode.Circles: HandleShapeCompletion(2, () => {
+                    double radius = Math.Sqrt(Math.Pow(_previewPoints[1].X - _previewPoints[0].X, 2) + Math.Pow(_previewPoints[1].Y - _previewPoints[0].Y, 2));
+                    return new CircleShape { Center = _previewPoints[0], Radius = radius, Color = GetNextColor() };
+                }); break;
                 case DrawingMode.Rectangles: HandleShapeCompletion(2, () => new RectangleShape { P1 = _previewPoints[0], P2 = _previewPoints[1], Color = GetNextColor() }); break;
                 case DrawingMode.Grid: HandleShapeCompletion(2, () => new GridShape { P1 = _previewPoints[0], P2 = _previewPoints[1], CellSize = _gridCellSize, Color = GetNextColor() }); break;
                 case DrawingMode.Markers:
@@ -647,6 +698,34 @@ namespace ScreenRuler
             return distance < _snapRadius ? (Point?)closest : null;
         }
 
+        private LineShape? FindClosestLine(Point mousePosition)
+        {
+            LineShape? closestLine = null;
+            double minDistance = double.MaxValue;
+
+            foreach (var line in _shapes.OfType<LineShape>())
+            {
+                double dx = line.P2.X - line.P1.X;
+                double dy = line.P2.Y - line.P1.Y;
+                if (dx == 0 && dy == 0) continue;
+
+                double t = ((mousePosition.X - line.P1.X) * dx + (mousePosition.Y - line.P1.Y) * dy) / (dx * dx + dy * dy);
+                t = Math.Max(0, Math.Min(1, t));
+
+                double closestX = line.P1.X + t * dx;
+                double closestY = line.P1.Y + t * dy;
+                
+                double distance = Math.Sqrt(Math.Pow(mousePosition.X - closestX, 2) + Math.Pow(mousePosition.Y - closestY, 2));
+
+                if (distance < 10 && distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestLine = line;
+                }
+            }
+            return closestLine;
+        }
+
         #endregion
 
         #region Background Capture
@@ -657,7 +736,7 @@ namespace ScreenRuler
             System.Threading.Thread.Sleep(200);
 
             _backgroundBitmap?.Dispose();
-
+            
             var currentScreen = Screen.FromControl(this);
             Rectangle bounds = currentScreen.Bounds;
             _backgroundBitmapOrigin = bounds.Location;
@@ -667,6 +746,8 @@ namespace ScreenRuler
             {
                 g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
             }
+            
+            _canvasOffset = Point.Subtract(this.Location, new Size(_backgroundBitmapOrigin));
 
             this.Visible = true;
             this.Opacity = 1.0;
@@ -689,23 +770,48 @@ namespace ScreenRuler
         {
             using (var sfd = new SaveFileDialog())
             {
-                sfd.Filter = "Ruler Session|*.json";
+                sfd.Filter = "Ruler Session (*.sez)|*.sez";
                 sfd.Title = "Save Ruler Session";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    var state = new RulerState
+                    try
                     {
-                        Location = this.Location,
-                        Size = this.Size,
-                        CalibrationPixels = CalibrationSettings.Pixels,
-                        CalibrationUnitsValue = CalibrationSettings.UnitsValue,
-                        CalibrationUnitName = CalibrationSettings.UnitName,
-                        Shapes = _shapes
-                    };
+                        using (var fileStream = new FileStream(sfd.FileName, FileMode.Create))
+                        using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
+                        {
+                            var state = new RulerState
+                            {
+                                Location = this.Location,
+                                Size = this.Size,
+                                CanvasOffset = _canvasOffset,
+                                CalibrationPixels = CalibrationSettings.Pixels,
+                                CalibrationUnitsValue = CalibrationSettings.UnitsValue,
+                                CalibrationUnitName = CalibrationSettings.UnitName,
+                                Shapes = _shapes
+                            };
+                            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                            string json = JsonConvert.SerializeObject(state, Formatting.Indented, settings);
 
-                    var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-                    string json = JsonConvert.SerializeObject(state, Formatting.Indented, settings);
-                    File.WriteAllText(sfd.FileName, json);
+                            var jsonEntry = archive.CreateEntry("session.json");
+                            using (var writer = new StreamWriter(jsonEntry.Open()))
+                            {
+                                writer.Write(json);
+                            }
+
+                            if (_backgroundBitmap != null)
+                            {
+                                var imageEntry = archive.CreateEntry("background.png");
+                                using (var entryStream = imageEntry.Open())
+                                {
+                                    _backgroundBitmap.Save(entryStream, ImageFormat.Png);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to save session: {ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -714,33 +820,65 @@ namespace ScreenRuler
         {
             using (var ofd = new OpenFileDialog())
             {
-                ofd.Filter = "Ruler Session|*.json";
+                ofd.Filter = "Ruler Session (*.sez)|*.sez";
                 ofd.Title = "Load Ruler Session";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    try
+                    LoadSession(ofd.FileName);
+                }
+            }
+        }
+
+        private void LoadSession(string filePath)
+        {
+            try
+            {
+                using (var fileStream = new FileStream(filePath, FileMode.Open))
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
+                {
+                    var jsonEntry = archive.GetEntry("session.json");
+                    if (jsonEntry == null) throw new FileNotFoundException("session.json not found in archive.");
+
+                    string json;
+                    using (var reader = new StreamReader(jsonEntry.Open()))
                     {
-                        string json = File.ReadAllText(ofd.FileName);
-                        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-                        var state = JsonConvert.DeserializeObject<RulerState>(json, settings);
-
-                        if (state != null)
-                        {
-                            this.Location = state.Location;
-                            this.Size = state.Size;
-                            CalibrationSettings.Pixels = state.CalibrationPixels;
-                            CalibrationSettings.UnitsValue = state.CalibrationUnitsValue;
-                            CalibrationSettings.UnitName = state.CalibrationUnitName;
-                            _shapes = state.Shapes ?? new List<IShape>();
-
-                            ResetDrawingState();
-                        }
+                        json = reader.ReadToEnd();
                     }
-                    catch (Exception ex)
+
+                    var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                    var state = JsonConvert.DeserializeObject<RulerState>(json, settings);
+
+                    if (state != null)
                     {
-                        MessageBox.Show($"Failed to load session file: {ex.Message}", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Location = state.Location;
+                        this.Size = state.Size;
+                        _canvasOffset = state.CanvasOffset;
+                        CalibrationSettings.Pixels = state.CalibrationPixels;
+                        CalibrationSettings.UnitsValue = state.CalibrationUnitsValue;
+                        CalibrationSettings.UnitName = state.CalibrationUnitName;
+                        _shapes = state.Shapes ?? new List<IShape>();
+
+                        var imageEntry = archive.GetEntry("background.png");
+                        if (imageEntry != null)
+                        {
+                            _backgroundBitmap?.Dispose();
+                            using (var entryStream = imageEntry.Open())
+                            {
+                                _backgroundBitmap = new Bitmap(entryStream);
+                            }
+                            this.Opacity = 1.0;
+                        }
+                        else
+                        {
+                            ClearBackground();
+                        }
+                        ResetDrawingState();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load session file: {ex.Message}", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
