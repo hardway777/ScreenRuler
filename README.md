@@ -6,9 +6,7 @@ A versatile, on-screen measurement tool for Windows, built with C# and Windows F
 
 It allows you to measure pixels, calibrate to real-world units, and analyze geometry on a static, pannable canvas captured from your screen.
 
-*It is highly recommended to replace the screenshot below with an animated GIF showcasing the new drawing modes and features!*
-
-![Advanced Screen Ruler v3.0 in action](images/screenshotv3.png)
+![Advanced Screen Ruler v3.0 in action](https://github.com/hardway777/ScreenRuler/blob/main/images/screenshotv4.5.png)
 
 ## ✨ Features
 
@@ -97,6 +95,10 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   `H`: Toggle the help screen.
 
 ## Changelog
+
+### v4.1
+-   **Improvements & Fixes:**
+    -   Fix draw labels.
 
 ### v4.0
 -   **New Features:**
