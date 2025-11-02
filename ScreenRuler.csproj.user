@@ -4,6 +4,9 @@
     <Compile Update="CalibrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Dialogs\InputDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="RulerForm.cs">
       <SubType>Form</SubType>
     </Compile>

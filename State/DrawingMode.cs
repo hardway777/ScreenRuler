@@ -1,4 +1,4 @@
-﻿namespace ScreenRuler.State
+namespace ScreenRuler.State
 {
     public enum DrawingMode
     {
@@ -8,6 +8,7 @@
         Rectangles,
         Grid,
         Markers,
-        Recalibrate
+        Recalibrate,
+        Perspective
     }
 }

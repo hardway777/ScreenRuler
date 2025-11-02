@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ScreenRuler.Dialogs;
 using ScreenRuler.Shapes;
 using ScreenRuler.State;
 using System;
@@ -53,6 +54,7 @@ namespace ScreenRuler
         private readonly List<Point> _previewPoints = new List<Point>();
         private Point _currentMousePosition;
         private double _gridCellSize = 10.0;
+        private double _tempPerspectiveWidth = 0;
 
         private bool _isSnapEnabled = false;
         private bool _isGuidesEnabled = false;
@@ -150,7 +152,7 @@ namespace ScreenRuler
 
                     DrawPreviewShape(g, font);
                     DrawSnapIndicator(g);
-                    
+
                     g.Restore(savedState);
 
                     DrawGuides(g);
@@ -171,25 +173,23 @@ namespace ScreenRuler
                 var helpLines = new List<string>
                 {
                     "--- Drawing Modes ---",
-                    "[1] - Lines | [2] - Angles | [3] - Circles",
-                    "[4] - Rectangles | [5] - Grid | [*] - Markers",
-                    "[R] - Recalibrate by Line",
+                    "[1] Lines | [2] Angles | [3] Circles",
+                    "[4] Rectangles | [5] Grid | [*] Markers",
+                    "[6] Perspective | [R] Recalibrate",
                     "",
                     "--- Precision Modifiers ---",
-                    "[S] - Toggle Snap | [D] - Toggle Guides",
-                    "[Ctrl] - Lock Cursor Position",
-                    "[Shift] - Lock Axis / Fast Pan / Viewport Drag",
+                    "[S] Snap | [D] Guides | [Ctrl] Lock Cursor",
+                    "[Shift] Lock Axis / Fast Pan / Viewport Drag",
                     "",
                     "--- Mouse Controls ---",
-                    "Left Click - Place points",
-                    "Middle Click - Cancel drawing / Clear all",
-                    "Mouse Wheel - Adjust context value",
-                    "Shift + Wheel - Adjust Overlay Opacity",
+                    "LMB - Place points",
+                    "MMB - Cancel drawing / Clear all",
+                    "Wheel - Adjust context value",
+                    "Shift+Wheel - Adjust Overlay Opacity",
                     "",
                     "--- Canvas ---",
-                    "[Arrow Keys] - Pan Canvas",
-                    "[Home] - Reset Pan",
-                    "[C] - Capture Background | [X] - Clear Background",
+                    "[Arrows] Pan | [Home] Reset Pan",
+                    "[C] Capture BG | [X] Clear BG",
                     "",
                     "[H] - Close Help"
                 };
@@ -247,6 +247,27 @@ namespace ScreenRuler
                         var gridPreview = new GridShape { P1 = _previewPoints[0], P2 = canvasMousePosition, CellSize = _gridCellSize, Color = nextColor };
                         gridPreview.Draw(g, font);
                         break;
+                    case DrawingMode.Perspective:
+                        using (var solidPen = new Pen(nextColor, 2))
+                        {
+                            if (_previewPoints.Count == 1) // Рисуем базу
+                            {
+                                g.DrawLine(pen, _previewPoints[0], canvasMousePosition);
+                            }
+                            else if (_previewPoints.Count == 2) // Рисуем высоту
+                            {
+                                g.DrawLine(solidPen, _previewPoints[0], _previewPoints[1]);
+                                g.DrawLine(pen, _previewPoints[0], canvasMousePosition);
+                            }
+                            else if (_previewPoints.Count == 3) // Рисуем замыкающие стороны
+                            {
+                                g.DrawLine(solidPen, _previewPoints[0], _previewPoints[1]);
+                                g.DrawLine(solidPen, _previewPoints[0], _previewPoints[2]);
+                                g.DrawLine(pen, _previewPoints[1], canvasMousePosition);
+                                g.DrawLine(pen, _previewPoints[2], canvasMousePosition);
+                            }
+                        }
+                        break;
                 }
             }
         }
@@ -277,7 +298,7 @@ namespace ScreenRuler
                 }
             }
         }
-        
+
         private void DrawUIIndicators(Graphics g, Brush brush, Font font)
         {
             var indicators = new List<string> { $"Mode: {_currentMode}" };
@@ -286,16 +307,16 @@ namespace ScreenRuler
             if (ModifierKeys.HasFlag(Keys.Shift) && _previewPoints.Count > 0) indicators.Add("[A] Axis Lock");
             if (_isCursorLocked) indicators.Add("[Ctrl] Cursor Locked");
             if (_backgroundBitmap != null) indicators.Add("[C] Captured");
-            
-            var pos = new PointF(5, this.Height - (font.Height * 2) - 10); 
-            
+
+            var pos = new PointF(5, this.Height - (font.Height * 2) - 10);
+
             DrawingHelpers.DrawStringWithShadow(g, string.Join(" | ", indicators), font, brush, pos, Color.White);
 
             string contextText = "";
             if (_isSnapEnabled) contextText = $"Snap Radius: {_snapRadius}px";
             else if (_currentMode == DrawingMode.Grid && _previewPoints.Count == 1) contextText = $"Cell Size: {_gridCellSize:F1} {CalibrationSettings.UnitName}";
             else if (_currentMode == DrawingMode.Angles && _previewPoints.Count == 2) contextText = _measureOuterAngle ? "Outer Angle" : "Inner Angle";
-            
+
             if (!string.IsNullOrEmpty(contextText))
             {
                 var contextPos = new PointF(_currentMousePosition.X + 15, _currentMousePosition.Y + 15);
@@ -395,7 +416,7 @@ namespace ScreenRuler
                 }
             }
         }
-        
+
         private void RulerForm_Resize(object sender, EventArgs e)
         {
             this.Invalidate();
@@ -431,7 +452,7 @@ namespace ScreenRuler
                 this.Invalidate();
                 return;
             }
-            
+
             int panAmount = e.Shift ? 10 : 1;
             bool canvasChanged = false;
             switch (e.KeyCode)
@@ -457,6 +478,7 @@ namespace ScreenRuler
                 case Keys.D4: newMode = DrawingMode.Rectangles; break;
                 case Keys.D5: newMode = DrawingMode.Grid; break;
                 case Keys.Multiply: newMode = DrawingMode.Markers; break;
+                case Keys.D6: newMode = DrawingMode.Perspective; break;
                 case Keys.S: _isSnapEnabled = !_isSnapEnabled; break;
                 case Keys.D: _isGuidesEnabled = !_isGuidesEnabled; break;
                 case Keys.H: _showHelp = !_showHelp; break;
@@ -562,7 +584,7 @@ namespace ScreenRuler
             if (isDragging)
             {
                 Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
-                
+
                 if (_backgroundBitmap != null && ModifierKeys.HasFlag(Keys.Shift))
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
@@ -572,11 +594,29 @@ namespace ScreenRuler
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
                 }
-                
+
                 this.Invalidate();
                 return;
             }
-            
+
+            Point canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
+            var activePerspectiveGrid = _shapes.OfType<PerspectiveShape>().FirstOrDefault(p => p.IsPointInside(canvasMousePos));
+
+            if (_previewPoints.Count > 0)
+            {
+                var previewStartGrid = _shapes.OfType<PerspectiveShape>().FirstOrDefault(p => p.IsPointInside(_previewPoints[0]));
+                if (previewStartGrid != null)
+                {
+                    activePerspectiveGrid = previewStartGrid;
+                    if (!activePerspectiveGrid.IsPointInside(canvasMousePos))
+                    {
+                        Point closestBoundaryPoint = activePerspectiveGrid.GetClosestPointOnBoundary(canvasMousePos);
+                        processedMousePosition = Point.Subtract(closestBoundaryPoint, new Size(_canvasOffset));
+                        canvasMousePos = closestBoundaryPoint;
+                    }
+                }
+            }
+
             if (_previewPoints.Count > 0)
             {
                 if (ModifierKeys.HasFlag(Keys.Shift))
@@ -587,10 +627,10 @@ namespace ScreenRuler
                     if (dx > dy) processedMousePosition.Y = startPoint.Y;
                     else processedMousePosition.X = startPoint.X;
                 }
-                
+
                 if (_isSnapEnabled)
                 {
-                    Point canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
+                    canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
                     Point? closestPoint = FindClosestSnapPoint(canvasMousePos);
                     if (closestPoint.HasValue)
                     {
@@ -614,7 +654,7 @@ namespace ScreenRuler
                     if (Math.Abs(processedMousePosition.Y - screenPoint.Y) < 2) processedMousePosition.Y = screenPoint.Y;
                 }
             }
-            
+
             _currentMousePosition = processedMousePosition;
             this.Invalidate();
         }
@@ -632,7 +672,7 @@ namespace ScreenRuler
                 _isPotentialClick = false;
             }
         }
-        
+
         private void HandleMouseClickLogic(MouseEventArgs e)
         {
             if (_currentMode == DrawingMode.Recalibrate)
@@ -655,16 +695,76 @@ namespace ScreenRuler
             }
 
             Point canvasMousePosition = Point.Add(_currentMousePosition, new Size(_canvasOffset));
+
+            if (_currentMode == DrawingMode.Perspective)
+            {
+                _previewPoints.Add(canvasMousePosition);
+                if (_previewPoints.Count == 2)
+                {
+                    using (var dialog = new InputDialog("Set Base Width", "Enter the true width of the base line:"))
+                    {
+                        if (dialog.ShowDialog() != DialogResult.OK || !double.TryParse(dialog.InputText, out _tempPerspectiveWidth))
+                        {
+                            ResetDrawingState();
+                            return;
+                        }
+                    }
+                }
+                else if (_previewPoints.Count == 3)
+                {
+                    using (var dialog = new InputDialog("Set True Height", "Enter the true height of the side edge:"))
+                    {
+                        if (dialog.ShowDialog() != DialogResult.OK || !double.TryParse(dialog.InputText, out double height))
+                        {
+                            ResetDrawingState();
+                            return;
+                        }
+                        _gridCellSize = height;
+                    }
+                }
+                else if (_previewPoints.Count == 4)
+                {
+                    var pShape = new PerspectiveShape
+                    {
+                        P1 = _previewPoints[0],
+                        P2 = _previewPoints[1],
+                        P3 = _previewPoints[2],
+                        P4 = _previewPoints[3],
+                        TrueBaseWidth = _tempPerspectiveWidth,
+                        TrueHeight = _gridCellSize,
+                        Color = GetNextColor()
+                    };
+                    _shapes.Add(pShape);
+                    _lineColorIndex = (_lineColorIndex + 1) % _lineColors.Count;
+                    ResetDrawingState();
+                    _currentMode = DrawingMode.Lines;
+                }
+                this.Invalidate();
+                return;
+            }
+
             _previewPoints.Add(canvasMousePosition);
 
             switch (_currentMode)
             {
-                case DrawingMode.Lines: HandleShapeCompletion(2, () => new LineShape { P1 = _previewPoints[0], P2 = _previewPoints[1], Color = GetNextColor() }); break;
+                case DrawingMode.Lines:
+                    HandleShapeCompletion(2, () =>
+                    {
+                        var newLine = new LineShape { P1 = _previewPoints[0], P2 = _previewPoints[1], Color = GetNextColor() };
+                        var grid = _shapes.OfType<PerspectiveShape>().FirstOrDefault(p => p.IsPointInside(newLine.P1) && p.IsPointInside(newLine.P2));
+                        if (grid != null)
+                        {
+                            newLine.OverriddenLength = grid.GetPerspectiveCorrectedLength(newLine.P1, newLine.P2);
+                        }
+                        return newLine;
+                    });
+                    break;
                 case DrawingMode.Angles: HandleShapeCompletion(3, () => new AngleShape { P1 = _previewPoints[0], Vertex = _previewPoints[1], P3 = _previewPoints[2], Color = GetNextColor(), MeasureOuterAngle = _measureOuterAngle }); break;
-                case DrawingMode.Circles: HandleShapeCompletion(2, () => {
-                    double radius = Math.Sqrt(Math.Pow(_previewPoints[1].X - _previewPoints[0].X, 2) + Math.Pow(_previewPoints[1].Y - _previewPoints[0].Y, 2));
-                    return new CircleShape { Center = _previewPoints[0], Radius = radius, Color = GetNextColor() };
-                }); break;
+                case DrawingMode.Circles:
+                    HandleShapeCompletion(2, () => {
+                        double radius = Math.Sqrt(Math.Pow(_previewPoints[1].X - _previewPoints[0].X, 2) + Math.Pow(_previewPoints[1].Y - _previewPoints[0].Y, 2));
+                        return new CircleShape { Center = _previewPoints[0], Radius = radius, Color = GetNextColor() };
+                    }); break;
                 case DrawingMode.Rectangles: HandleShapeCompletion(2, () => new RectangleShape { P1 = _previewPoints[0], P2 = _previewPoints[1], Color = GetNextColor() }); break;
                 case DrawingMode.Grid: HandleShapeCompletion(2, () => new GridShape { P1 = _previewPoints[0], P2 = _previewPoints[1], CellSize = _gridCellSize, Color = GetNextColor() }); break;
                 case DrawingMode.Markers:
@@ -714,7 +814,7 @@ namespace ScreenRuler
 
                 double closestX = line.P1.X + t * dx;
                 double closestY = line.P1.Y + t * dy;
-                
+
                 double distance = Math.Sqrt(Math.Pow(mousePosition.X - closestX, 2) + Math.Pow(mousePosition.Y - closestY, 2));
 
                 if (distance < 10 && distance < minDistance)
@@ -736,7 +836,7 @@ namespace ScreenRuler
             System.Threading.Thread.Sleep(200);
 
             _backgroundBitmap?.Dispose();
-            
+
             var currentScreen = Screen.FromControl(this);
             Rectangle bounds = currentScreen.Bounds;
             _backgroundBitmapOrigin = bounds.Location;
@@ -746,7 +846,7 @@ namespace ScreenRuler
             {
                 g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
             }
-            
+
             _canvasOffset = Point.Subtract(this.Location, new Size(_backgroundBitmapOrigin));
 
             this.Visible = true;
