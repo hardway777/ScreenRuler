@@ -4,17 +4,19 @@
 
 A versatile, on-screen measurement tool for Windows, built with C# and Windows Forms. What started as a simple ruler has evolved into a powerful 2D measurement and annotation tool, perfect for designers, engineers, and game developers.
 
-It allows you to measure pixels, calibrate to real-world units, and analyze geometry on a static, pannable canvas captured from your screen.
+It allows you to measure pixels, calibrate to real-world units, and analyze geometry on a static, pannable canvas captured from your screen, now with support for perspective correction.
 
-![Advanced Screen Ruler v3.0 in action](https://github.com/hardway777/ScreenRuler/blob/main/images/screenshotv4.5.png)
+![Advanced Screen Ruler v5.0 in action](images/screenshotv5.png)
 
 ## ✨ Features
 
+-   **Perspective Measurement (v5.0)**: Define a 4-point perspective plane on an image and measure distances within it as if you were on a flat surface. The tool uses bilinear interpolation to provide accurate, perspective-corrected measurements.
+
 -   **Comprehensive Drawing Toolkit**: Switch between multiple tools to measure anything you need.
-    -   **Lines**: Measure distance between two points.
+    -   **Lines**: Measure distance between two points, with or without perspective correction.
     -   **Angles**: Three-point angle measurement with inner/outer angle toggle.
-    -   **Circles**: Define by center and radius, with automatic calculations.
-    -   **Rectangles**: Define by diagonal corners.
+    -   **Circles**: Define by center and radius.
+    -   **Rectangles**: Define by diagonal corners, with length labels for each side.
     -   **Grids**: Create rectangular grids with adjustable cell size (in calibrated units).
     -   **Markers**: Place markers to highlight points of interest and display their coordinates.
 
@@ -25,24 +27,23 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   **Cursor Lock (Ctrl)**: Hold to lock the cursor's position for precise clicks.
 
 -   **Canvas & Background Capture**: Work on a static image of your screen.
-    -   **Capture (C)**: Take a screenshot of the current monitor to use as a static background. The ruler becomes fully opaque for clarity.
+    -   **Capture (C)**: Take a screenshot of the current monitor to use as a static background.
     -   **Pannable Canvas**: Pan the background and all drawn shapes using the **Arrow Keys**.
     -   **Two Drag Modes**:
         -   **Default Drag**: Moves the window and the canvas together.
-        -   **Viewport Drag (Shift + Drag)**: Moves only the window over the static canvas, like a camera viewport.
-    -   **Adjustable Overlay**: Use **Shift + Mouse Wheel** to change the opacity of the color overlay for perfect contrast.
-    -   **Clear (X)**: Remove the background and return to live mode.
+        -   **Viewport Drag (Shift + Drag)**: Moves only the window over the static canvas.
+    -   **Adjustable Overlay**: Use **Shift + Mouse Wheel** to change the opacity of the color overlay.
 
 -   **Interactive Recalibration (R)**: Enter Recalibration mode, click on any drawn line, and enter its real-world length to instantly recalibrate the entire canvas.
 
 -   **Full Session Management**: Never lose your work.
-    -   **Save/Load Session**: Save all your drawn shapes, window position, size, canvas pan, and calibration settings to a single `.sez` (Session Zipped) file. The captured background is included in the save file.
+    -   **Save/Load Session**: Save all your drawn shapes, window state, canvas pan, and calibration to a single `.sez` file, including the captured background.
     -   **File Association**: Opens `.sez` files passed as a command-line argument.
 
 -   **In-App Help & UI Enhancements**:
     -   Press **H** to toggle an on-screen help panel with all hotkeys.
-    -   Context-sensitive information appears next to the cursor (snap radius, grid size, etc.).
-    -   All text is rendered with a high-contrast shadow for excellent readability on any background.
+    -   Context-sensitive information appears next to the cursor.
+    -   All shape labels are drawn in a rounded box for maximum clarity.
 
 ## 🚀 Getting Started
 
@@ -69,7 +70,7 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   *While drawing*: Cancels the current shape.
     -   *On empty area*: Clears all drawn shapes.
 -   **Mouse Wheel**: Adjusts the context-sensitive value (Snap Radius, Grid Cell Size, or Angle Type).
--   **Shift + Mouse Wheel**: Adjusts the background overlay opacity in capture mode.
+-   **Shift + Mouse Wheel**: Adjusts the background overlay opacity.
 -   **Right Click**: Opens the context menu.
 
 ### Keyboard Hotkeys
@@ -79,6 +80,7 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   `3`: Circles
     -   `4`: Rectangles
     -   `5`: Grid
+    -   `6`: Perspective Plane
     -   `*`: Markers
     -   `R`: Recalibrate by Line
 -   **Precision Modifiers**:
@@ -96,52 +98,30 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
 
 ## Changelog
 
+### v5.0 - The Perspective Update
+-   **New Features:**
+    -   **Perspective Measurement**: Added a `Perspective` drawing mode (`6`) to define a 4-point plane.
+    -   Lines drawn inside this plane are automatically measured with perspective correction.
+    -   The creation workflow guides the user through setting the true width and height of the plane.
+-   **Improvements & Fixes:**
+    -   **New Label Style**: All shape labels are now drawn inside a rounded white box with a colored border for maximum clarity.
+    -   Improved the drawing preview for creating the perspective plane.
+    -   Drawing is now constrained within the boundaries of a perspective plane if started inside one.
+    -   Fixed a critical bug with calculations on vertical or horizontal perspective base lines.
+
 ### v4.1
 -   **Improvements & Fixes:**
-    -   Fix draw labels.
-
+    -   Fixed label drawing logic for all shapes.
+	
 ### v4.0
 -   **New Features:**
-    -   Added interactive recalibration mode (`R`) to set scale based on a drawn line.
-    -   Added session saving/loading to a compressed `.sez` file, including the captured background image.
-    -   The application can now open `.sez` files passed as command-line arguments.
+    -   Added interactive recalibration mode (`R`).
+    -   Added session saving/loading to a compressed `.sez` file, including the background image.
+    -   Added command-line argument support for opening `.sez` files.
 -   **Improvements & Fixes:**
     -   Reworked mouse drag logic for intuitive canvas vs. viewport panning.
-    -   Improved grid tool with smart defaults and smoother, proportional resizing.
-    -   Improved text positioning for all shapes for better readability.
-    -   Fixed a UI bug where status text could overlap with the ruler scale.
-	
-### v3.1
--   **New Features:**
-    -   Added cursor lock by holding `Ctrl` for precise point placement.
-
-### v3.0 - The Precision CAD Update
-This version transformed the ruler into a full-fledged 2D measurement and annotation tool with a pannable canvas, multiple drawing modes, and advanced precision features.
-
--   **New Features:**
-    -   **Multiple Drawing Modes**: Added tools for measuring Angles, Circles, Rectangles, Grids, and placing Markers.
-    -   **Background Capture System**: Added the ability to capture the screen and use it as a static, pannable canvas.
-    -   **Precision Modifiers**: Implemented Snap-to-Point (`S`), Guides (`D`), and Axis Lock (`Shift`).
-    -   **In-App Help Screen**: A new help panel (`H`) displays all hotkeys.
--   **Improvements & Fixes:**
-    -   **Advanced Mouse Controls**: Reworked mouse logic to distinguish between clicks and drags.
-    -   **Contextual Adjustments**: The mouse wheel now dynamically adjusts values.
-    -   **Enhanced Readability**: All text now has a high-contrast shadow.
-    -   **UX Refinements**: Added physical cursor snapping.
-    -   Fixed a critical `OutOfMemoryException` related to angle drawing.
-
-### v2.0 - The Annotation Update
-This major update transformed the ruler from a passive measurement grid into an active annotation tool.
-
--   **New Features:**
-    -   Implemented an interactive multi-line measurement tool.
-    -   Added a dynamic preview line that follows the cursor.
-    -   Introduced an adaptive UI for the central info hub.
-    -   Added a toggleable "Always on Top" option.
--   **Improvements & Fixes:**
-    -   Added high-contrast outlines to measurement lines and text.
-    -   Color-coded the horizontal and vertical axes.
-    -   Improved measurement precision.
+    -   Improved grid tool with smart defaults and proportional resizing.
+    -   Fixed a UI bug where status text could overlap the ruler scale.
 
 ## 🤝 Contributing
 
