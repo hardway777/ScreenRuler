@@ -152,7 +152,7 @@ namespace ScreenRuler
 
                     DrawPreviewShape(g, font);
                     DrawSnapIndicator(g);
-
+                    
                     g.Restore(savedState);
 
                     DrawGuides(g);
@@ -250,16 +250,16 @@ namespace ScreenRuler
                     case DrawingMode.Perspective:
                         using (var solidPen = new Pen(nextColor, 2))
                         {
-                            if (_previewPoints.Count == 1) // Рисуем базу
+                            if (_previewPoints.Count == 1)
                             {
                                 g.DrawLine(pen, _previewPoints[0], canvasMousePosition);
                             }
-                            else if (_previewPoints.Count == 2) // Рисуем высоту
+                            else if (_previewPoints.Count == 2)
                             {
                                 g.DrawLine(solidPen, _previewPoints[0], _previewPoints[1]);
                                 g.DrawLine(pen, _previewPoints[0], canvasMousePosition);
                             }
-                            else if (_previewPoints.Count == 3) // Рисуем замыкающие стороны
+                            else if (_previewPoints.Count == 3)
                             {
                                 g.DrawLine(solidPen, _previewPoints[0], _previewPoints[1]);
                                 g.DrawLine(solidPen, _previewPoints[0], _previewPoints[2]);
@@ -298,7 +298,7 @@ namespace ScreenRuler
                 }
             }
         }
-
+        
         private void DrawUIIndicators(Graphics g, Brush brush, Font font)
         {
             var indicators = new List<string> { $"Mode: {_currentMode}" };
@@ -307,16 +307,16 @@ namespace ScreenRuler
             if (ModifierKeys.HasFlag(Keys.Shift) && _previewPoints.Count > 0) indicators.Add("[A] Axis Lock");
             if (_isCursorLocked) indicators.Add("[Ctrl] Cursor Locked");
             if (_backgroundBitmap != null) indicators.Add("[C] Captured");
-
-            var pos = new PointF(5, this.Height - (font.Height * 2) - 10);
-
+            
+            var pos = new PointF(5, this.Height - (font.Height * 2) - 10); 
+            
             DrawingHelpers.DrawStringWithShadow(g, string.Join(" | ", indicators), font, brush, pos, Color.White);
 
             string contextText = "";
             if (_isSnapEnabled) contextText = $"Snap Radius: {_snapRadius}px";
             else if (_currentMode == DrawingMode.Grid && _previewPoints.Count == 1) contextText = $"Cell Size: {_gridCellSize:F1} {CalibrationSettings.UnitName}";
             else if (_currentMode == DrawingMode.Angles && _previewPoints.Count == 2) contextText = _measureOuterAngle ? "Outer Angle" : "Inner Angle";
-
+            
             if (!string.IsNullOrEmpty(contextText))
             {
                 var contextPos = new PointF(_currentMousePosition.X + 15, _currentMousePosition.Y + 15);
@@ -416,7 +416,7 @@ namespace ScreenRuler
                 }
             }
         }
-
+        
         private void RulerForm_Resize(object sender, EventArgs e)
         {
             this.Invalidate();
@@ -452,7 +452,7 @@ namespace ScreenRuler
                 this.Invalidate();
                 return;
             }
-
+            
             int panAmount = e.Shift ? 10 : 1;
             bool canvasChanged = false;
             switch (e.KeyCode)
@@ -584,7 +584,7 @@ namespace ScreenRuler
             if (isDragging)
             {
                 Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
-
+                
                 if (_backgroundBitmap != null && ModifierKeys.HasFlag(Keys.Shift))
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
@@ -594,14 +594,14 @@ namespace ScreenRuler
                 {
                     this.Location = Point.Add(dragFormPoint, new Size(diff));
                 }
-
+                
                 this.Invalidate();
                 return;
             }
-
+            
             Point canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
             var activePerspectiveGrid = _shapes.OfType<PerspectiveShape>().FirstOrDefault(p => p.IsPointInside(canvasMousePos));
-
+            
             if (_previewPoints.Count > 0)
             {
                 var previewStartGrid = _shapes.OfType<PerspectiveShape>().FirstOrDefault(p => p.IsPointInside(_previewPoints[0]));
@@ -627,7 +627,7 @@ namespace ScreenRuler
                     if (dx > dy) processedMousePosition.Y = startPoint.Y;
                     else processedMousePosition.X = startPoint.X;
                 }
-
+                
                 if (_isSnapEnabled)
                 {
                     canvasMousePos = Point.Add(processedMousePosition, new Size(_canvasOffset));
@@ -654,7 +654,7 @@ namespace ScreenRuler
                     if (Math.Abs(processedMousePosition.Y - screenPoint.Y) < 2) processedMousePosition.Y = screenPoint.Y;
                 }
             }
-
+            
             _currentMousePosition = processedMousePosition;
             this.Invalidate();
         }
@@ -672,7 +672,7 @@ namespace ScreenRuler
                 _isPotentialClick = false;
             }
         }
-
+        
         private void HandleMouseClickLogic(MouseEventArgs e)
         {
             if (_currentMode == DrawingMode.Recalibrate)
@@ -836,7 +836,7 @@ namespace ScreenRuler
             System.Threading.Thread.Sleep(200);
 
             _backgroundBitmap?.Dispose();
-
+            
             var currentScreen = Screen.FromControl(this);
             Rectangle bounds = currentScreen.Bounds;
             _backgroundBitmapOrigin = bounds.Location;
@@ -846,8 +846,25 @@ namespace ScreenRuler
             {
                 g.CopyFromScreen(bounds.Location, Point.Empty, bounds.Size);
             }
-
+            
+            var oldCanvasOffset = _canvasOffset;
             _canvasOffset = Point.Subtract(this.Location, new Size(_backgroundBitmapOrigin));
+            var offsetDifference = Point.Subtract(_canvasOffset, new Size(oldCanvasOffset));
+            
+            if (offsetDifference.X != 0 || offsetDifference.Y != 0)
+            {
+                var offsetSize = new Size(offsetDifference);
+                foreach (var shape in _shapes)
+                {
+                    if (shape is LineShape line) { line.P1 = Point.Add(line.P1, offsetSize); line.P2 = Point.Add(line.P2, offsetSize); }
+                    else if (shape is AngleShape angle) { angle.P1 = Point.Add(angle.P1, offsetSize); angle.Vertex = Point.Add(angle.Vertex, offsetSize); angle.P3 = Point.Add(angle.P3, offsetSize); }
+                    else if (shape is CircleShape circle) { circle.Center = Point.Add(circle.Center, offsetSize); }
+                    else if (shape is RectangleShape rect) { rect.P1 = Point.Add(rect.P1, offsetSize); rect.P2 = Point.Add(rect.P2, offsetSize); }
+                    else if (shape is GridShape grid) { grid.P1 = Point.Add(grid.P1, offsetSize); grid.P2 = Point.Add(grid.P2, offsetSize); }
+                    else if (shape is MarkerShape marker) { marker.Position = Point.Add(marker.Position, offsetSize); }
+                    else if (shape is PerspectiveShape pShape) { pShape.P1 = Point.Add(pShape.P1, offsetSize); pShape.P2 = Point.Add(pShape.P2, offsetSize); pShape.P3 = Point.Add(pShape.P3, offsetSize); pShape.P4 = Point.Add(pShape.P4, offsetSize); }
+                }
+            }
 
             this.Visible = true;
             this.Opacity = 1.0;

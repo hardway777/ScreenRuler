@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "F:\\Projects\\ScreenRuler\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\screenruler.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:screenruler.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|f:\\projects\\screenruler\\rulerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99F2791A-C338-4AB1-AEF3-D2915EDC1320}|ScreenRuler.csproj|solutionrelative:rulerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -70,11 +74,23 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "ScreenRuler",
+              "DocumentMoniker": "F:\\Projects\\ScreenRuler\\ScreenRuler.csproj",
+              "RelativeDocumentMoniker": "ScreenRuler.csproj",
+              "ToolTip": "F:\\Projects\\ScreenRuler\\ScreenRuler.csproj",
+              "RelativeToolTip": "ScreenRuler.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-02T03:47:16.565Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "PerspectiveShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\PerspectiveShape.cs",
               "RelativeDocumentMoniker": "Shapes\\PerspectiveShape.cs",
@@ -87,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "InputDialog.cs [Design]",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Dialogs\\InputDialog.cs",
               "RelativeDocumentMoniker": "Dialogs\\InputDialog.cs",
@@ -99,7 +115,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "CircleShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\CircleShape.cs",
               "RelativeDocumentMoniker": "Shapes\\CircleShape.cs",
@@ -111,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "RectangleShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\RectangleShape.cs",
               "RelativeDocumentMoniker": "Shapes\\RectangleShape.cs",
@@ -123,7 +139,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "RulerState.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\State\\RulerState.cs",
               "RelativeDocumentMoniker": "State\\RulerState.cs",
@@ -135,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "RulerForm.cs [Design]",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\RulerForm.cs",
               "RelativeDocumentMoniker": "RulerForm.cs",
@@ -147,7 +163,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "DrawingHelpers.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\DrawingHelpers.cs",
               "RelativeDocumentMoniker": "DrawingHelpers.cs",
@@ -159,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "MarkerShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\MarkerShape.cs",
               "RelativeDocumentMoniker": "Shapes\\MarkerShape.cs",
@@ -171,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "GridShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\GridShape.cs",
               "RelativeDocumentMoniker": "Shapes\\GridShape.cs",
@@ -183,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "AngleShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\AngleShape.cs",
               "RelativeDocumentMoniker": "Shapes\\AngleShape.cs",
@@ -195,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "LineShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\LineShape.cs",
               "RelativeDocumentMoniker": "Shapes\\LineShape.cs",
@@ -207,7 +223,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "IShape.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\Shapes\\IShape.cs",
               "RelativeDocumentMoniker": "Shapes\\IShape.cs",
@@ -219,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "RulerForm.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\RulerForm.cs",
               "RelativeDocumentMoniker": "RulerForm.cs",
@@ -232,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "RulerForm.Designer.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\RulerForm.Designer.cs",
               "RelativeDocumentMoniker": "RulerForm.Designer.cs",
@@ -244,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "CalibrationForm.cs",
               "DocumentMoniker": "F:\\Projects\\ScreenRuler\\CalibrationForm.cs",
               "RelativeDocumentMoniker": "CalibrationForm.cs",

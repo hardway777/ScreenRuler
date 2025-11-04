@@ -6,11 +6,11 @@ A versatile, on-screen measurement tool for Windows, built with C# and Windows F
 
 It allows you to measure pixels, calibrate to real-world units, and analyze geometry on a static, pannable canvas captured from your screen, now with support for perspective correction.
 
-![Advanced Screen Ruler v5.0 in action](images/screenshotv5.png)
+![Advanced Screen Ruler v5.0 in action](https://github.com/hardway777/ScreenRuler/blob/main/images/screenshotv5.png)
 
 ## ✨ Features
 
--   **Perspective Measurement (v5.0)**: Define a 4-point perspective plane on an image and measure distances within it as if you were on a flat surface. The tool uses bilinear interpolation to provide accurate, perspective-corrected measurements.
+-   **Perspective Measurement**: Define a 4-point perspective plane on an image and measure distances within it as if you were on a flat surface. The tool uses a robust geometric method to provide accurate, perspective-corrected measurements.
 
 -   **Comprehensive Drawing Toolkit**: Switch between multiple tools to measure anything you need.
     -   **Lines**: Measure distance between two points, with or without perspective correction.
@@ -98,6 +98,15 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
 
 ## Changelog
 
+### v5.1
+-   **Improvements & Fixes:**
+    -   Fixed inverted drag logic for the captured canvas; default drag now moves the canvas with the window, and `Shift+Drag` moves the window over a static canvas (viewport mode).
+    -   Corrected a critical bug where repeated screen captures would progressively offset existing shapes.
+    -   Resolved incorrect drawing preview when creating a perspective plane, providing a more intuitive workflow.
+    -   Addressed a mathematical degeneracy that caused perspective calculations to fail on vertical or horizontal base lines.
+    -   Shape label borders now correctly use the shape's color for better visual cohesion.
+    -   Fixed a bug that prevented mouse clicks from registering for drawing points.
+
 ### v5.0 - The Perspective Update
 -   **New Features:**
     -   **Perspective Measurement**: Added a `Perspective` drawing mode (`6`) to define a 4-point plane.
@@ -105,9 +114,7 @@ It allows you to measure pixels, calibrate to real-world units, and analyze geom
     -   The creation workflow guides the user through setting the true width and height of the plane.
 -   **Improvements & Fixes:**
     -   **New Label Style**: All shape labels are now drawn inside a rounded white box with a colored border for maximum clarity.
-    -   Improved the drawing preview for creating the perspective plane.
     -   Drawing is now constrained within the boundaries of a perspective plane if started inside one.
-    -   Fixed a critical bug with calculations on vertical or horizontal perspective base lines.
 
 ### v4.1
 -   **Improvements & Fixes:**
